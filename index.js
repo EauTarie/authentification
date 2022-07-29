@@ -58,8 +58,8 @@ app.post('/api/register',async (req, res) => {
         res.status(401).send('Compte déjà existant')
     } else {
                 let hash3
-                await bcrypt.genSalt(10, async(err, salt) => {
-                    hash3 = await bcrypt.hash(req.body.pass,salt);
+                const hashedPassword = await bcrypt.genSalt(10,async(err, salt) => {
+                    hash3 = await bcrypt.hash(req.body.pass,salt,);
                     console.log(hash3);
                 })
             res.status(201).send('Compte créer avec succès');
@@ -67,7 +67,7 @@ app.post('/api/register',async (req, res) => {
                 userId: req.body.id,
                 first:req.body.nom,
                 mail: req.body.email,
-                pass: hash3,
+                pass: hashedPassword,
                 admin:req.body.admin
             });
             console.log(user)
