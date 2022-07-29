@@ -54,25 +54,24 @@ function generateRefreshToken(user) {
 };
 
 app.post('/api/register',async (req, res) => {
-    if (req.body.email == User.email) {
+    if (req.body.email == User.mail) {
         res.status(401).send('Compte déjà existant')
     } else {
-                let hash3
-                const hashedPassword = await bcrypt.genSalt(10,async(err, salt) => {
-                    hash3 = await bcrypt.hash(req.body.pass,salt,);
-                    console.log(hash3);
-                })
-            res.status(201).send('Compte créer avec succès');
-            user = new User({
-                userId: req.body.id,
-                first:req.body.nom,
-                mail: req.body.email,
-                pass: hashedPassword,
-                admin:req.body.admin
-            });
-            console.log(user)
-        }
-    });
+        console.log(req.body.pass)
+        const hash3 = await bcrypt.hash(req.body.pass,10)
+         console.log(hash3)
+         res.status(201).send('Compte créer avec succès');
+         user = new User({
+           userId: req.body.id,
+           first:req.body.nom,
+           mail: req.body.email,
+           pass: hash3,
+           admin:req.body.admin
+         })
+         console.log(user)
+    
+}
+});
 
 app.post('/api/login', (req, res) => {
     if (req.body.email !== user.email) {
